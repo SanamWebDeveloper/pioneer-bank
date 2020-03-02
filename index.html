@@ -26,19 +26,19 @@
             <div class="col-md-4">
                 <div class="deposit status">
                     <h5>Deposit</h5>
-                    <h2>$00</h2>
+                    <h2>$ <span id="currentDeposit">00</span></h2>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="withdraw status">
                     <h5>Withdraw</h5>
-                    <h2>$00</h2>
+                    <h2>$ <span id="currentWithdraw">00</span></h2>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="balance status">
                     <h5>Balance</h5>
-                    <h2>$1240</h2>
+                    <h2>$ <spam id="currentBalance">1240</spam></h2>
                 </div>
             </div>
         </div>
@@ -55,9 +55,9 @@
             <div class="col-md-6">
                 <div class="submit-area">
                     <h4>Withdraw</h4>
-                    <input type="text" class="form-control" placeholder="$ammount you want to withdraw">
+                    <input id="withdrawAmount" type="text" class="form-control" placeholder="$ammount you want to withdraw">
                     <br>
-                    <button class="btn btn-success">Withdraw</button>
+                    <button id="addWithdraw" class="btn btn-success">Withdraw</button>
                 </div>
             </div>
         </div>
@@ -65,7 +65,58 @@
 
 
     <script>
-        //login button event handler.
+        //Loging button event handler.
+        const loginBtn = document.getElementById("login");
+        loginBtn.addEventListener("click", function(){
+            const loginArea = document.getElementById("login-area");
+            loginArea.style.display = "none";
+            const transactionArea = document.getElementById("transaction-area");
+            transactionArea.style.display = "block";
+        })
+
+        //deposit button handler (ja depo + main balanc 2 ta kei update kore).
+
+        const depositBtn = document.getElementById("addDeposit");
+        depositBtn.addEventListener("click", function(){
+            
+            const depositNumber = getInputNumber("depositAmount");  //deposit er value functoin k diye nmbr a cnvrt kore anlam.submit-area
+
+            updateSpanText("currentDeposit", depositNumber);  //ei functn k call kore id dialm ager value ache jekhane, ar ekta deposit number pass korlam.submit-area
+            updateSpanText("currentBalance", depositNumber);  //main value te depositNumber add korbe.
+
+            document.getElementById("depositAmount").value="";  //deposit er input field k empty korbe.
+        })
+
+        //withdraw btn handlr.
+        const withdrawBtn = document.getElementById("addWithdraw");
+        withdrawBtn.addEventListener("click", function(){
+            //first widdrw er input k nmbr a cnvrsn korbe.
+            const withDrawNumber = getInputNumber("withdrawAmount");  //nmbr cnvrsn fnctn k call kore withdw er input field er id pass korchi.deposit
+
+            updateSpanText("currentWithdraw", withDrawNumber);
+            updateSpanText("currentBalance", -1 * withDrawNumber); //withdraw hok ba deposit hok ei function call kore balance k update rakha hoy.
+            
+            document.getElementById("withdrawAmount").value ="";
+        })
+
+
+            //input value to number conversion.
+        function getInputNumber(id){
+            const amount = document.getElementById(id).value;
+            const amountNumber = parseFloat(amount);
+            return amountNumber;
+        }
+        
+            //update showing ammount function
+        function updateSpanText(id, addedNumber){
+            const current = document.getElementById(id).innerText;
+            const currentNumber = parseFloat(current);
+            const totalAmount = currentNumber + addedNumber;
+            document.getElementById(id).innerText = totalAmount;
+        }
+
+
+        /*//login button event handler.
         const loginBtn = document.getElementById("login");    //Id ta dhorbo
         loginBtn.addEventListener("click", function(){        //function likhbo prothome
             //console.log("amake click marche..");
@@ -75,13 +126,34 @@
             transactionArea.style.display = "block";
         })
 
-        //deposit button event handler.
+        //Doposit buttonhandler!
+        const depositBtn = document.getElementById("addDeposit");   //oi btn ta shorlam, simple function likhlam
+        depositBtn.addEventListener("click", function(){                //event add korlam, ki korle sei even chalu hobe bole dilam (click)
+            const depositAmount = document.getElementById("depositAmount").value;          //
+            const depositNumber = parseFloat(depositAmount);
+
+            const currentDeposit = document.getElementById("currentDeposit").innerText;
+            const currentDepositNumber = parseFloat(currentDeposit);
+            const totalDeposit = depositNumber + currentDepositNumber;
+
+            document.getElementById("currentDeposit").innerText = totalDeposit;
+            
+            const currenBalance = document.getElementById("currentBalance").innerText;S
+            const currenBalanceNumber = parseFloat(currentBalance);
+            const totalBalance = depositNumber + currentDepositNumber;
+            document.getElementById("currentBalance").innerText = totalBalance;
+
+            document.getElementById("depositAmount").value = "";
+        })
+
+        /*//*deposit button event handler.
         const depositBtn = document.getElementById("addDeposit");
         depositBtn.addEventListener("click", function(){
             //console.log("D CLICKED");
             const depositAmount = document.getElementById("depositAmount").value;
             const depositNumber = parseFloat(depositAmount);
-        });
+        });*/
+        
     </script>
 
 
